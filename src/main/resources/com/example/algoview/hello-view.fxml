@@ -2,20 +2,20 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <VBox alignment="TOP_CENTER" prefHeight="494.0" prefWidth="759.0" spacing="20.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.algoview.SortingController">
     <Label alignment="CENTER" text="Sorting Algorithms" />
+   <Label fx:id="infoLabel" />
    <HBox alignment="CENTER">
-      <children>
-          <Button onAction="#onHelloButtonClick" text="Add circle" />
-         <Button mnemonicParsing="false" onAction="#onSwapButtonClick" text="Swap" />
-      </children>
+      <Button onAction="#onHelloButtonClick" text="Add item"/>
+      <ComboBox fx:id="sortAlgoList" prefWidth="150.0" promptText="Select an algorithm"/>
+      <Button mnemonicParsing="false" onAction="#onSwapButtonClick" text="Sort"/>
    </HBox>
    <FlowPane fx:id="fp" alignment="TOP_CENTER" columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0">
       <effect>

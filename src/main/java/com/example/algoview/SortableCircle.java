@@ -1,9 +1,9 @@
 package com.example.algoview;
 
+import javafx.animation.FillTransition;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
 import java.util.Objects;
@@ -12,26 +12,34 @@ import static javafx.scene.shape.StrokeType.INSIDE;
 
 public class SortableCircle extends Region implements Comparable<SortableCircle> {
     private Integer value;
+    private final Circle circle;
+    private final Text text;
 
     public SortableCircle(double radius, int value) {
         this.value = value;
 
-        Circle circle = new Circle(radius);
-        circle.setFill(Color.DODGERBLUE);
-        circle.setStroke(Color.BLACK);
-        circle.setStrokeType(INSIDE);
+        this.circle = new Circle(radius);
+        this.circle.setFill(Color.DODGERBLUE);
+        this.circle.setStroke(Color.BLACK);
+        this.circle.setStrokeType(INSIDE);
 
         // Position the circle in the center of the region
-        circle.centerXProperty().bind(this.widthProperty().divide(2));
-        circle.centerYProperty().bind(this.heightProperty().divide(2));
+        this.circle.centerXProperty().bind(this.widthProperty().divide(2));
+        this.circle.centerYProperty().bind(this.heightProperty().divide(2));
 
-        Text text1 = new Text(this.value.toString());
+        this.text = new Text(this.value.toString());
 
         // Position the text in the center of the circle
-        text1.xProperty().bind(circle.centerXProperty().subtract(text1.getLayoutBounds().getWidth() / 2));
-        text1.yProperty().bind(circle.centerYProperty().add(text1.getLayoutBounds().getHeight() / 4));
+        this.centerText();
 
-        this.getChildren().addAll(circle, text1);
+        this.getChildren().addAll(this.circle, this.text);
+    }
+
+    public void highlight() {
+        FillTransition ft = new FillTransition(javafx.util.Duration.millis(500), this.circle, Color.DODGERBLUE, Color.INDIANRED);
+        ft.setCycleCount(2);
+        ft.setAutoReverse(true);
+        ft.play();
     }
 
     @Override
@@ -47,5 +55,29 @@ public class SortableCircle extends Region implements Comparable<SortableCircle>
     @Override
     public int compareTo(SortableCircle o) {
         return this.value.compareTo(o.value);
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+        this.text.setText(value.toString());
+        this.centerText();
+    }
+
+    public Integer getValue() {
+        return this.value;
+    }
+
+    public void swap(SortableCircle other) {
+        other.highlight();
+        this.highlight();
+
+        Integer temp = this.value;
+        this.setValue(other.getValue());
+        other.setValue(temp);
+    }
+
+    private void centerText() {
+        this.text.xProperty().bind(this.circle.centerXProperty().subtract(this.text.getLayoutBounds().getWidth() / 2));
+        this.text.yProperty().bind(this.circle.centerYProperty().add(this.text.getLayoutBounds().getHeight() / 4));
     }
 }
