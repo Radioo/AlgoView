@@ -35,8 +35,8 @@ public class SortableCircle extends Region implements Comparable<SortableCircle>
         this.getChildren().addAll(this.circle, this.text);
     }
 
-    public void highlight() {
-        FillTransition ft = new FillTransition(javafx.util.Duration.millis(500), this.circle, Color.DODGERBLUE, Color.INDIANRED);
+    public void highlight(javafx.scene.paint.Color color) {
+        FillTransition ft = new FillTransition(javafx.util.Duration.millis(250), this.circle, Color.DODGERBLUE, color);
         ft.setCycleCount(2);
         ft.setAutoReverse(true);
         ft.play();
@@ -68,8 +68,8 @@ public class SortableCircle extends Region implements Comparable<SortableCircle>
     }
 
     public void swap(SortableCircle other) {
-        other.highlight();
-        this.highlight();
+        other.highlight(Color.ORANGERED);
+        this.highlight(Color.ORANGERED);
 
         Integer temp = this.value;
         this.setValue(other.getValue());

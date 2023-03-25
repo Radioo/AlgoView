@@ -1,11 +1,13 @@
 package com.example.algoview;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Color;
 
 import java.util.random.RandomGenerator;
 
@@ -57,13 +59,35 @@ public class SortingController {
                 //quickSort();
                 break;
         }
+
+        sortAlgoList.setDisable(true);
+    }
+
+    private void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setInfoText(String text) {
+        Platform.runLater(() -> infoLabel.setText(text));
     }
 
     private void bubbleSort() {
+        Thread sortThread = new Thread(this::bubbleSortTask);
+
+        sortThread.start();
+    }
+
+    private void bubbleSortTask() {
         ObservableList<Node> children = fp.getChildren();
         int n = children.size();
 
         for(int i = 0; i < n; i++) {
+            setInfoText("Iteration " + (i + 1));
+
             if(i % 2 == 0) {
                 for(int j = 0; j < n - 1; j++) {
                     SortableCircle c1 = (SortableCircle) children.get(j);
@@ -71,8 +95,13 @@ public class SortingController {
 
                     if(c1.compareTo(c2) > 0) {
                         c1.swap(c2);
-                        return;
                     }
+                    else {
+                        c1.highlight(Color.LIGHTGREEN);
+                        c2.highlight(Color.LIGHTGREEN);
+                    }
+
+                    this.sleep(1000);
                 }
             }
             else {
@@ -82,10 +111,17 @@ public class SortingController {
 
                     if(c1.compareTo(c2) < 0) {
                         c1.swap(c2);
-                        return;
                     }
+                    else {
+                        c1.highlight(Color.LIGHTGREEN);
+                        c2.highlight(Color.LIGHTGREEN);
+                    }
+
+                    this.sleep(1000);
                 }
             }
         }
+
+        setInfoText("Sorting complete");
     }
 }
