@@ -1,23 +1,30 @@
 package com.example.algoview;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import java.io.IOException;
 import java.util.random.RandomGenerator;
 
-public class SortingController {
+public class SortingCircleController {
     @FXML
     private FlowPane fp;
     @FXML
     private ComboBox<String> sortAlgoList;
     @FXML
     private Label infoLabel;
+    @FXML
+    private VBox sortingVBox;
+
+    private ObservableList<Node> sortingLayout;
 
     @FXML
     private void initialize() {
@@ -27,10 +34,27 @@ public class SortingController {
     @FXML
     protected void onHelloButtonClick() {
         fp.getChildren().add(new SortableCircle(15, RandomGenerator.getDefault().nextInt(100)));
+    }
+
+    @FXML
+    protected void switchToTreesScene() throws IOException {
 
 
     }
 
+    @FXML
+    protected void switchToSortingBarsScene() {
+
+        this.sortingLayout = FXCollections.observableArrayList(sortingVBox.getChildren());
+
+        sortingVBox.getChildren().clear();
+
+    }
+
+    @FXML
+    protected void switchToSortingScene() {
+        sortingVBox.getChildren().setAll(sortingLayout);
+    }
 
     @FXML
     protected void onSwapButtonClick() {
